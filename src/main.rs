@@ -1,7 +1,8 @@
-mod core;
+mod datastore;
 
-use core::btree::Btree;
+use datastore::btree::Btree;
 
 fn main() {
-    println!("Hello, world!");
+    let mut btree = Btree::new();
+    println!("Btree: {:?}", btree);
 }

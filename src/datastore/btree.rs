@@ -1,10 +1,12 @@
 // Struct
+#[derive(Debug)]
 struct Node {
     next: Option<Box<Node>>,
     value: String,
     key: i32,
 }
 
+#[derive(Debug)]
 pub struct Btree {
     root: Option<Box<Node>>,
     size: usize,
@@ -14,12 +16,11 @@ pub struct Btree {
 // Methods
 
 impl Node {
-    fn new(value: i32) -> Node {
+    fn new() -> Node {
         Node {
-            left: None,
-            right: None,
+            key: 0,
             next: None,
-            value,
+            value: "".to_string(),
         }
     }
 
@@ -29,14 +30,16 @@ impl Node {
 }
 
 impl Btree {
-    pub fn get(&self, key: &u32) -> Option<u32> {}
+    pub fn get(&self, key: &u32) -> Option<u32> {
+        Some(0)
+    }
 
     pub fn insert(&mut self, key: &u32, value: String) -> Result<String, String> {
         Ok("".to_string())
     }
 
     pub fn delete(&mut self, key: &u32) -> Result<u32, String> {
-        Ok("".to_string())
+        Ok(0)
     }
 
     pub fn update(&mut self, key: &u32, value: String) -> Result<String, String> {
@@ -45,7 +48,7 @@ impl Btree {
 
     pub fn new() -> Self {
         Btree {
-            root: Node::new(0),
+            root: Some(Box::new(Node::new())),
             size: 0,
             balance: 4, // balance = 1 + (size of ram / size of key type )
         }
