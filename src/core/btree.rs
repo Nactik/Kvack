@@ -1,5 +1,3 @@
-use crate::store::Store;
-
 // Struct
 struct Node {
     next: Option<Box<Node>>,
@@ -7,7 +5,7 @@ struct Node {
     key: i32,
 }
 
-struct Btree {
+pub struct Btree {
     root: Option<Box<Node>>,
     size: usize,
     balance: i32,
@@ -30,22 +28,22 @@ impl Node {
     }
 }
 
-impl Store for Btree {
-    fn get(&self, key: &u32) -> Option<u32> {}
+impl Btree {
+    pub fn get(&self, key: &u32) -> Option<u32> {}
 
-    fn insert(&mut self, key: &u32, value: String) -> Result<String, String> {
+    pub fn insert(&mut self, key: &u32, value: String) -> Result<String, String> {
         Ok("".to_string())
     }
 
-    fn delete(&mut self, key: &u32) -> Result<u32, String> {
+    pub fn delete(&mut self, key: &u32) -> Result<u32, String> {
         Ok("".to_string())
     }
 
-    fn update(&mut self, key: &u32, value: String) -> Result<String, String> {
+    pub fn update(&mut self, key: &u32, value: String) -> Result<String, String> {
         Ok("".to_string())
     }
 
-    fn new() -> Self {
+    pub fn new() -> Self {
         Btree {
             root: Node::new(0),
             size: 0,
