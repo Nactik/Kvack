@@ -1,7 +1,7 @@
 // Struct
 #[derive(Debug)]
 struct Node {
-    next: Option<Box<Node>>,
+    next: Option<&mut Node>,
     value: String,
     key: i32,
 }
@@ -30,6 +30,10 @@ impl Node {
 }
 
 impl Btree {
+    fn find(&self, key: &u32) -> Option<u32> {
+        Some(0)
+    }
+
     pub fn get(&self, key: &u32) -> Option<u32> {
         Some(0)
     }
@@ -48,7 +52,7 @@ impl Btree {
 
     pub fn new() -> Self {
         Btree {
-            root: Some(Box::new(Node::new())),
+            root: None,
             size: 0,
             balance: 4, // balance = 1 + (size of ram / size of key type )
         }
