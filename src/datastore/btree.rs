@@ -1,37 +1,72 @@
 // Struct
 #[derive(Debug)]
-struct Node {
-    next: Option<&mut Node>,
+struct Record {
+    key: u32,
     value: String,
-    key: i32,
+    next: Option<&Node>,
+}
+
+#[derive(Debug)]
+struct Node {
+    records: Vec<Record>,
+    keys: Vec<u32>,
+    branching: u32, // must be better to pass it as global const
+    children: Vec<Node>,
 }
 
 #[derive(Debug)]
 pub struct Btree {
     root: Option<Box<Node>>,
     size: usize,
-    balance: i32,
+    branching: u32,
+}
+
+impl Record {
+    fn new(&key: u32, value: String, next: Option:<&Node>) -> Record {
+        return Record {
+            key: *key,
+            value: value,
+            next: next,
+    };
+}
 }
 
 // Methods
-
 impl Node {
     fn new() -> Node {
-        Node {
-            key: 0,
-            next: None,
-            value: "".to_string(),
-        }
+        return Node {
+            records: Vec::new(),
+            keys: Vec::new(),
+            children: None,
+            branching: 4,
+        };
     }
 
     fn is_leaf(&self) -> bool {
-        return !self.value.is_empty();
+        return !self.records.len() != 0;
     }
 }
 
 impl Btree {
-    fn find(&self, key: &u32) -> Option<u32> {
-        Some(0)
+
+    fn find_node(&self, key: &u32, node: &Node) -> &Node {
+        // TODO: Do this but better
+        if node.is_leaf() {
+            return node;
+        } else {
+            let mut i = 0;
+            while i < node.keys.len() {
+                if *key < node.keys[i] {
+                    return self.find_node(key, &node.children[i]);
+                }
+                i += 1;
+            }
+            return self.find_node(key, &node.children[i]);
+        }
+    }
+
+    fn find(&self, key: &u32, root: &Node) -> Option<&Node> {
+        let node_to_insert = self.find_node(key, root);
     }
 
     pub fn get(&self, key: &u32) -> Option<u32> {
@@ -39,7 +74,16 @@ impl Btree {
     }
 
     pub fn insert(&mut self, key: &u32, value: String) -> Result<String, String> {
-        Ok("".to_string())
+        match self.root {
+            Some(&Node) => {
+                let node_to_insert = self.find(key, &self.root);
+            }
+            None => {
+                let mut node = Node::new();
+                node.keys.push(*key);
+                node.records.push(Record::new(key, value, None));
+            }
+        }
     }
 
     pub fn delete(&mut self, key: &u32) -> Result<u32, String> {
@@ -51,10 +95,10 @@ impl Btree {
     }
 
     pub fn new() -> Self {
-        Btree {
+        return Btree {
             root: None,
             size: 0,
-            balance: 4, // balance = 1 + (size of ram / size of key type )
-        }
+            branching: 4,
+        };
     }
 }
