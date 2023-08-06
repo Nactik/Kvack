@@ -22,13 +22,13 @@ pub struct Btree {
 }
 
 impl Record {
-    fn new(&key: u32, value: String, next: Option:<&Node>) -> Record {
+    fn new(&self, &key: u32, value: String, next: Option:<&Node>) -> Record {
         return Record {
             key: *key,
             value: value,
             next: next,
-    };
-}
+        };
+    }
 }
 
 // Methods
@@ -53,15 +53,8 @@ impl Btree {
         // TODO: Do this but better
         if node.is_leaf() {
             return node;
+
         } else {
-            let mut i = 0;
-            while i < node.keys.len() {
-                if *key < node.keys[i] {
-                    return self.find_node(key, &node.children[i]);
-                }
-                i += 1;
-            }
-            return self.find_node(key, &node.children[i]);
         }
     }
 
@@ -82,6 +75,8 @@ impl Btree {
                 let mut node = Node::new();
                 node.keys.push(*key);
                 node.records.push(Record::new(key, value, None));
+
+                return Ok("".to_string()); // TODO: think of a useful value to return
             }
         }
     }
