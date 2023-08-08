@@ -17,12 +17,12 @@ struct Node {
 #[derive(Debug)]
 pub struct Btree {
     root: Option<Box<Node>>,
-    size: usize,
+    size: u32,
     branching: u32,
 }
 
 impl Record {
-    fn new(&self, &key: u32, value: String, next: Option:<&Node>) -> Record {
+    fn new(key: &u32, value: String, next: Option<&Node>) -> Record {
         return Record {
             key: *key,
             value: value,
@@ -37,7 +37,7 @@ impl Node {
         return Node {
             records: Vec::new(),
             keys: Vec::new(),
-            children: None,
+            children: Vec::new(),
             branching: 4,
         };
     }
@@ -48,19 +48,18 @@ impl Node {
 }
 
 impl Btree {
-
     fn find_node(&self, key: &u32, node: &Node) -> &Node {
         // TODO: Do this but better
         if node.is_leaf() {
             return node;
-
         } else {
+            return node; // TODO
         }
     }
 
-    fn find(&self, key: &u32, root: &Node) -> Option<&Node> {
-        let node_to_insert = self.find_node(key, root);
-    }
+    // fn find(&self, key: &u32, root: &Node) -> Option<&Node> {
+    //     let node_to_insert = self.find_node(key, root);
+    // }
 
     pub fn get(&self, key: &u32) -> Option<u32> {
         Some(0)
@@ -68,14 +67,14 @@ impl Btree {
 
     pub fn insert(&mut self, key: &u32, value: String) -> Result<String, String> {
         match self.root {
-            Some(&Node) => {
-                let node_to_insert = self.find(key, &self.root);
+            Some(mut node) => {
+                return Err("Not yet implemented".to_string());
+                // let node_to_insert = self.find(key, &self.root);
             }
             None => {
                 let mut node = Node::new();
                 node.keys.push(*key);
                 node.records.push(Record::new(key, value, None));
-
                 return Ok("".to_string()); // TODO: think of a useful value to return
             }
         }
@@ -95,5 +94,23 @@ impl Btree {
             size: 0,
             branching: 4,
         };
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    // Note this useful idiom: importing names from outer (for mod tests) scope.
+    use super::*;
+
+    #[test]
+    fn test_insert_first_element() {
+        // This assert would fire and test will fail.
+        // Please note, that private functions can be tested too!
+
+        let mut tree = Btree::new();
+
+        let result = tree.insert(&1, "test".to_string());
+
+        let test = dbg!(&tree);
     }
 }
