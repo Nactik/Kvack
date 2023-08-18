@@ -3,7 +3,7 @@
 struct Record {
     key: u32,
     value: String,
-    next: Option<&Node>,
+    next: Option<Node>,
 }
 
 #[derive(Debug)]
@@ -22,7 +22,7 @@ pub struct Btree {
 }
 
 impl Record {
-    fn new(key: &u32, value: String, next: Option<&Node>) -> Record {
+    fn new(key: &u32, value: String, next: Option<Node>) -> Record {
         return Record {
             key: *key,
             value: value,
@@ -48,14 +48,14 @@ impl Node {
 }
 
 impl Btree {
-    fn find_node(&self, key: &u32, node: &Node) -> &Node {
-        // TODO: Do this but better
-        if node.is_leaf() {
-            return node;
-        } else {
-            return node; // TODO
-        }
-    }
+    // fn find_node(&self, key: &u32, node: Node) -> &Node {
+    //     // TODO: Do this but better
+    //     if node.is_leaf() {
+    //         return _;
+    //     } else {
+    //         return &node; // TODO
+    //     }
+    // }
 
     // fn find(&self, key: &u32, root: &Node) -> Option<&Node> {
     //     let node_to_insert = self.find_node(key, root);
@@ -66,8 +66,8 @@ impl Btree {
     }
 
     pub fn insert(&mut self, key: &u32, value: String) -> Result<String, String> {
-        match self.root {
-            Some(mut node) => {
+        match &self.root {
+            Some(_node) => {
                 return Err("Not yet implemented".to_string());
                 // let node_to_insert = self.find(key, &self.root);
             }
@@ -75,6 +75,7 @@ impl Btree {
                 let mut node = Node::new();
                 node.keys.push(*key);
                 node.records.push(Record::new(key, value, None));
+                self.root = Some(Box::new(node));
                 return Ok("".to_string()); // TODO: think of a useful value to return
             }
         }
