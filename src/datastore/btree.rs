@@ -16,15 +16,15 @@ struct Node {
 
 #[derive(Debug)]
 pub struct Btree {
-    root: Option<Box<Node>>,
+    root: Option<Node>,
     size: u32,
     branching: u32,
 }
 
 impl Record {
-    fn new(key: &u32, value: String, next: Option<Node>) -> Record {
+    fn new(key: u32, value: String, next: Option<Node>) -> Record {
         return Record {
-            key: *key,
+            key: key,
             value: value,
             next: next,
         };
@@ -48,46 +48,53 @@ impl Node {
 }
 
 impl Btree {
-    // fn find_node(&self, key: &u32, node: Node) -> &Node {
-    //     // TODO: Do this but better
-    //     if node.is_leaf() {
-    //         return _;
-    //     } else {
-    //         return &node; // TODO
-    //     }
-    // }
+    fn find_node(key: u32, node: Node) -> Option<Node> {
+        if node.is_leaf() {
+            return Some(node);
+        } else {
+            return Some(node);
+        }
+    }
 
-    // fn find(&self, key: &u32, root: &Node) -> Option<&Node> {
-    //     let node_to_insert = self.find_node(key, root);
-    // }
+    fn find(key: u32, node: Node) -> Option<Node> {
+        let node_to_insert = Btree::find_node(key, node);
+        return None;
+    }
 
-    pub fn get(&self, key: &u32) -> Option<u32> {
+    pub fn get(&self, _key: &u32) -> Option<u32> {
         Some(0)
     }
 
     pub fn insert(&mut self, key: &u32, value: String) -> Result<String, String> {
-        match &self.root {
-            Some(_node) => {
-                return Err("Not yet implemented".to_string());
-                // let node_to_insert = self.find(key, &self.root);
+        match self.root {
+            Some(ref node) => {
+                let mut node_to_insert = Btree::find(*key, *node);
+                match node_to_insert {
+                    Some(ref mut node) => {
+                        node.records.push(Record::new(*key, value, None));
+                        return Ok("".to_string());
+                    }
+                    None => return Err("Not yet implemented".to_string()),
+                };
             }
             None => {
                 let mut node = Node::new();
                 node.keys.push(*key);
-                node.records.push(Record::new(key, value, None));
-                self.root = Some(Box::new(node));
+                node.records.push(Record::new(*key, value, None));
+                self.root = Some(node);
+                self.size += 1;
                 return Ok("".to_string()); // TODO: think of a useful value to return
             }
         }
     }
 
-    pub fn delete(&mut self, key: &u32) -> Result<u32, String> {
-        Ok(0)
-    }
-
-    pub fn update(&mut self, key: &u32, value: String) -> Result<String, String> {
-        Ok("".to_string())
-    }
+    // pub fn delete(&mut self, key: &u32) -> Result<u32, String> {
+    //     Ok(0)
+    // }
+    //
+    // pub fn update(&mut self, key: &u32, value: String) -> Result<String, String> {
+    //     Ok("".to_string())
+    // }
 
     pub fn new() -> Self {
         return Btree {
